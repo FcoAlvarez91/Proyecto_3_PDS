@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "717125022133",
+    "firebase_url": "https://four-mages.firebaseio.com",
+    "project_id": "four-mages",
+    "storage_bucket": "four-mages.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:717125022133:android:aba2203f2b18b928e169fc",
+        "android_client_info": {
+          "package_name": "com.Pillagers.FourMages"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "717125022133-00qi7lke3ld8p10gjhteknc8thg9iro1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5oIJspA2iEkYK90mPIo9ptRm4C80WFe0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "717125022133-00qi7lke3ld8p10gjhteknc8thg9iro1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

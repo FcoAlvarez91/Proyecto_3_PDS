@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources tools:keep="@string/firebase_database_url,@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_web_client_id" xmlns:tools="http://schemas.android.com/tools">
+  <string name="firebase_database_url" translatable="false">https://four-mages.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">717125022133</string>
+  <string name="google_storage_bucket" translatable="false">four-mages.appspot.com</string>
+  <string name="project_id" translatable="false">four-mages</string>
+  <string name="google_api_key" translatable="false">AIzaSyA5oIJspA2iEkYK90mPIo9ptRm4C80WFe0</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyA5oIJspA2iEkYK90mPIo9ptRm4C80WFe0</string>
+  <string name="google_app_id" translatable="false">1:717125022133:android:aba2203f2b18b928e169fc</string>
+  <string name="default_web_client_id" translatable="false">717125022133-00qi7lke3ld8p10gjhteknc8thg9iro1.apps.googleusercontent.com</string>
+</resources>
