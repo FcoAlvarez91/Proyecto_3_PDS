@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
 
     public TextMeshProUGUI email;
     public TextMeshProUGUI password;
+    public TextMeshProUGUI requestEmail;
     Firebase.Auth.FirebaseAuth auth;
     Firebase.Auth.FirebaseUser user;
     public DatabaseReference reference;
@@ -111,6 +112,31 @@ public class UIManager : MonoBehaviour
         });
     }
 
-    public void addFr() { }
+    public void sendFriendRequest()
+    {
+        FirebaseDatabase.DefaultInstance
+          .GetReference("users")
+          .GetValueAsync().ContinueWith(task => {
+              if (task.IsFaulted)
+              {
+                  // Handle the error...
+              }
+              else if (task.IsCompleted)
+              {
+                  DataSnapshot snapshot = task.Result;
+                  // Do something with snapshot...
+
+                  foreach (DataSnapshot user in snapshot.Children)
+                  {
+                      reference.Child("users").Child(auth.CurrentUser.UserId).Child("email").Child("request").SetValueAsync(auth.CurrentUser.Email);
+                  }
+              }
+          });
+    }
+
+    public void closeApp()
+    {
+        Application.Quit();
+    }
 
 }
