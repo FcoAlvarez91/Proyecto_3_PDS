@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Firebase;
+using Firebase.Database;
+using Firebase.Unity.Editor;
 
 public class UIManager : MonoBehaviour
 {
@@ -10,6 +13,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI password;
     Firebase.Auth.FirebaseAuth auth;
     Firebase.Auth.FirebaseUser user;
+    public DatabaseReference reference;
 
     // Handle initialization of the necessary firebase modules:
     void InitializeFirebase()
@@ -51,6 +55,8 @@ public class UIManager : MonoBehaviour
         auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
         auth.StateChanged += AuthStateChanged;
         AuthStateChanged(this, null);
+        FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://four-mages.firebaseio.com/");
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
     // Update is called once per frame
@@ -101,7 +107,10 @@ public class UIManager : MonoBehaviour
             Firebase.Auth.FirebaseUser newUser = task.Result;
             Debug.LogFormat("Firebase user created successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
+            reference.Child("users").Child(newUser.UserId).Child("email").SetValueAsync(email.text);
         });
     }
+
+    public void addFr() { }
 
 }
