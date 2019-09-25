@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
 
     public TextMeshProUGUI email;
     public TextMeshProUGUI password;
+    public TextMeshProUGUI friendReq;
     Firebase.Auth.FirebaseAuth auth;
     Firebase.Auth.FirebaseUser user;
     public DatabaseReference reference;
@@ -89,7 +90,8 @@ public class UIManager : MonoBehaviour
 
     public void newUser()
     {
-        auth.CreateUserWithEmailAndPasswordAsync(email.text, password.text).ContinueWith(task => {
+        auth.CreateUserWithEmailAndPasswordAsync(email.text, password.text).ContinueWith(task =>
+        {
             if (task.IsCanceled)
             {
                 Debug.LogError(email.ToString());
@@ -103,14 +105,19 @@ public class UIManager : MonoBehaviour
                 return;
             }
 
-            // Firebase user has been created.
+            // Firebase user has been created
+            //reference.Child("users").Child(UserId).Child("useremail").SetValueAsync(email.text);
             Firebase.Auth.FirebaseUser newUser = task.Result;
             Debug.LogFormat("Firebase user created successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
-            reference.Child("users").Child(newUser.UserId).Child("email").SetValueAsync(email.text);
+            reference.Child("users").Child(email.text.Replace('.', ',')).Child("DisplayName").SetValueAsync(email.text);
+        
         });
     }
 
-    public void addFr() { }
-
+    public void sendRequest()
+    {
+        string key = reference.Child("users").Child(friendReq.text.Replace('.', ',')).Child("invites").Push().Key;
+        reference.Child("users").Child(friendReq.text.Replace('.', ',')).Child("invites").Child(key).SetValueAsync(email.text);
+    }
 }
