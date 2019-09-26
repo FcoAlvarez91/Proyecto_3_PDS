@@ -120,4 +120,8 @@ public class UIManager : MonoBehaviour
         string key = reference.Child("users").Child(friendReq.text.Replace('.', ',')).Child("invites").Push().Key;
         reference.Child("users").Child(friendReq.text.Replace('.', ',')).Child("invites").Child(key).SetValueAsync(email.text);
     }
+    public void closeApp()
+    {
+        Application.Quit();
+    }
 }
