@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 using Firebase;
 using Firebase.Database;
@@ -15,6 +16,8 @@ public class UIManager : MonoBehaviour
     Firebase.Auth.FirebaseAuth auth;
     Firebase.Auth.FirebaseUser user;
     public DatabaseReference reference;
+    public GameObject mainMenu;
+    public GameObject loginMenu;
 
     // Handle initialization of the necessary firebase modules:
     void InitializeFirebase()
@@ -39,6 +42,9 @@ public class UIManager : MonoBehaviour
             if (signedIn)
             {
                 Debug.Log("Signed in " + user.UserId);
+
+                mainMenu.SetActive(true);
+                loginMenu.SetActive(false);
             }
         }
     }
@@ -80,12 +86,18 @@ public class UIManager : MonoBehaviour
                 Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
                 return;
             }
-
             Firebase.Auth.FirebaseUser newUser = task.Result;
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
         });
 
+    }
+
+    public void logOut()
+    {
+        auth.SignOut();
+        mainMenu.SetActive(false);
+        loginMenu.SetActive(true);
     }
 
     public void newUser()
@@ -105,13 +117,15 @@ public class UIManager : MonoBehaviour
                 return;
             }
 
+            mainMenu.SetActive(true);
+            loginMenu.SetActive(false);
             // Firebase user has been created
             //reference.Child("users").Child(UserId).Child("useremail").SetValueAsync(email.text);
             Firebase.Auth.FirebaseUser newUser = task.Result;
+            reference.Child("users").Child(email.text.Replace('.', ',')).Child("DisplayName").SetValueAsync(email.text);
             Debug.LogFormat("Firebase user created successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
-            reference.Child("users").Child(email.text.Replace('.', ',')).Child("DisplayName").SetValueAsync(email.text);
-        
+
         });
     }
 
@@ -120,6 +134,12 @@ public class UIManager : MonoBehaviour
         string key = reference.Child("users").Child(friendReq.text.Replace('.', ',')).Child("invites").Push().Key;
         reference.Child("users").Child(friendReq.text.Replace('.', ',')).Child("invites").Child(key).SetValueAsync(email.text);
     }
+
+    public void startGame()
+    {
+        SceneManager.LoadScene("In Game");
+    }
+
     public void closeApp()
     {
         Application.Quit();
