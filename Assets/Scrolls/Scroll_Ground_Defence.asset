@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abb2cf1f0c423d0438cc79e1289d059d, type: 3}
+  m_Name: Scroll_Ground_Defence
+  m_EditorClassIdentifier: 
+  id: 2
+  name: Ground Defence
+  effect: Take no damage for the next turn.
+  artwork: {fileID: 4902729985760503732, guid: cf1b3ad20ec9d934fa8ba5b6188fdebd, type: 3}
+  energy: {fileID: -4595943962039868564, guid: 8d37205dd86f1e64f81e34228c838514, type: 3}
+  type: 1
