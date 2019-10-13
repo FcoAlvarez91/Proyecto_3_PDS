@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e1dbd5c60f750247a27b8868bf18beb, type: 3}
   m_Name: Enemy_Rogue
   m_EditorClassIdentifier: 
-  name: Rogue
-  damage: 10
-  maxHP: 15
+  name: Noble
+  damage: 5
+  maxHP: 10
   difficulty: 1
-  body: {fileID: 3280127964516720914, guid: 7938d855042e82644ad1c5412a8521a9, type: 3}
-  weapon1: {fileID: 0}
+  body: {fileID: 21300018, guid: 89e26e054ffaef84dbed1b42bdc78e48, type: 3}
+  weapon1: {fileID: 5601323976189978565, guid: 48a7d0ea58047074b9e67d9ae35e2f3b, type: 3}
   weapon2: {fileID: 6843020654527762166, guid: 7938d855042e82644ad1c5412a8521a9, type: 3}

@@ -16,7 +16,7 @@ MonoBehaviour:
   damage: 10
   maxHP: 45
   difficulty: 2
-  body: {fileID: 4326577637851000454, guid: 7938d855042e82644ad1c5412a8521a9, type: 3}
+  body: {fileID: 21300036, guid: 7938d855042e82644ad1c5412a8521a9, type: 3}
   weapon1: {fileID: -8951780388439148649, guid: 48a7d0ea58047074b9e67d9ae35e2f3b,
     type: 3}
   weapon2: {fileID: -8951780388439148649, guid: 48a7d0ea58047074b9e67d9ae35e2f3b,

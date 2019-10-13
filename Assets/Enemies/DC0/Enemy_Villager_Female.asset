@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Villager Female
   damage: 3
-  maxHP: 10
+  maxHP: 7
   difficulty: 0
-  body: {fileID: 7157600387873164263, guid: 89e26e054ffaef84dbed1b42bdc78e48, type: 3}
+  body: {fileID: 21300002, guid: 89e26e054ffaef84dbed1b42bdc78e48, type: 3}
   weapon1: {fileID: -761887118410055393, guid: 48a7d0ea58047074b9e67d9ae35e2f3b, type: 3}
   weapon2: {fileID: 0}

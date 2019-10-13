@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Enemy_Monk
   m_EditorClassIdentifier: 
   name: Monk
-  damage: 5
-  maxHP: 20
+  damage: 4
+  maxHP: 12
   difficulty: 1
-  body: {fileID: 7481485634653070653, guid: 7938d855042e82644ad1c5412a8521a9, type: 3}
+  body: {fileID: 21300032, guid: 7938d855042e82644ad1c5412a8521a9, type: 3}
   weapon1: {fileID: -8951780388439148649, guid: 48a7d0ea58047074b9e67d9ae35e2f3b,
     type: 3}
   weapon2: {fileID: -8951780388439148649, guid: 48a7d0ea58047074b9e67d9ae35e2f3b,

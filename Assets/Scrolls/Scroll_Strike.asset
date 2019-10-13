@@ -16,8 +16,7 @@ MonoBehaviour:
   name: Strike
   effect: Deal medium damage to an enemy.
   energyType: none
-  artwork: {fileID: -1830589896716378220, guid: cf1b3ad20ec9d934fa8ba5b6188fdebd,
-    type: 3}
+  artwork: {fileID: 21300048, guid: cf1b3ad20ec9d934fa8ba5b6188fdebd, type: 3}
   energy: {fileID: -6315181103303682600, guid: 8d37205dd86f1e64f81e34228c838514, type: 3}
   type: 0
   damage: 4
