@@ -10,6 +10,7 @@ public class HealthManager : MonoBehaviour
     public int maxHealth;
     private Animator anim;
     public Slider healthBar;
+    public List<string> conditions;
     //public SFXManager sfxMan;
 
 
@@ -25,16 +26,32 @@ public class HealthManager : MonoBehaviour
 
         healthBar.maxValue = maxHealth;
         healthBar.value = currentHealth;
+        if(currentHealth > 0)
+        {
+            anim.SetBool("isDead", false);
+        }
     }
 
     public void HurtEntity(int damageToGive)
     {
+        foreach (string cond in conditions)
+        {
+            if (cond == "Defend")
+            {
+                damageToGive = damageToGive - 2;
+            }
+            if (cond == "Vulnerable")
+            {
+                damageToGive = damageToGive + 1;
+            }
+        }
+
         currentHealth -= damageToGive;
         //sfxMan.playerHurt.Play();
         if(currentHealth <= 0)
         {
             currentHealth = 0;
-            anim.SetTrigger("dead");
+            anim.SetBool("isDead", true);
         }
     }
 
@@ -44,6 +61,16 @@ public class HealthManager : MonoBehaviour
         if (currentHealth > maxHealth)
         {
             currentHealth = maxHealth;
-        }
+        }       
+    }
+
+    public void setCondition(string condition)
+    {
+        conditions.Add(condition);
+    }
+    
+    public void resetConditions()
+    {
+        conditions.Clear();
     }
 }

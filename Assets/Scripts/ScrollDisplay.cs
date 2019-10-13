@@ -9,6 +9,7 @@ public class ScrollDisplay : MonoBehaviour
 
     public Scroll scroll;
 
+    public bool isActive;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI effectText;
 
@@ -19,17 +20,18 @@ public class ScrollDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        setInfo();
+        isActive = false;
+    }
+
+    public void setInfo()
+    {
+
         nameText.text = scroll.name;
         effectText.text = scroll.effect;
 
         artworkImage.sprite = scroll.artwork;
         energyImage.sprite = scroll.energy;
         energySmallImage.sprite = scroll.energy;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

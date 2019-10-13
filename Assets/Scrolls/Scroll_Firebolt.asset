@@ -15,7 +15,11 @@ MonoBehaviour:
   id: 0
   name: Firebolt
   effect: Deal high damage to an enemy.
+  energyType: fire
   artwork: {fileID: -5063555655813669412, guid: cf1b3ad20ec9d934fa8ba5b6188fdebd,
     type: 3}
   energy: {fileID: -2893604443887825780, guid: 8d37205dd86f1e64f81e34228c838514, type: 3}
   type: 0
+  damage: 6
+  heal: 0
+  conditions: []

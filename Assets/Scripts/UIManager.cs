@@ -116,15 +116,14 @@ public class UIManager : MonoBehaviour
                 Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
                 return;
             }
-
-            mainMenu.SetActive(true);
-            loginMenu.SetActive(false);
             // Firebase user has been created
             //reference.Child("users").Child(UserId).Child("useremail").SetValueAsync(email.text);
             Firebase.Auth.FirebaseUser newUser = task.Result;
             reference.Child("users").Child(email.text.Replace('.', ',')).Child("DisplayName").SetValueAsync(email.text);
-            Debug.LogFormat("Firebase user created successfully: {0} ({1})",
-                newUser.DisplayName, newUser.UserId);
+            Debug.LogFormat("Firebase user created successfully");
+
+            mainMenu.SetActive(true);
+            loginMenu.SetActive(false);
 
         });
     }
