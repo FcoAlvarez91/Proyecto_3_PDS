@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f5d4069c578548ba9f199b46d61bf06d
+guid: c33fafcba4234b47909b07eeb87b870d
 labels:
 - gvh
 - gvh_version-6.5.0
@@ -112,7 +112,7 @@ PluginImporter:
   - first:
       iPhone: iOS
     second:
-      enabled: 1
+      enabled: 0
       settings:
         CompileFlags: 
         FrameworkDependencies: 
