@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class CardPress : MonoBehaviour
 {
-    Animator animator;
-    Animator animator2;
-    Animator animator3;
+    private Animator animator;
+    private Animator animator2;
+    private Animator animator3;
     public GameObject otherScroll1;
     public GameObject otherScroll2;
+    private ScrollDisplay scrollDisplay;
+    private ScrollDisplay scrollDisplay2;
+    private ScrollDisplay scrollDisplay3;
 
     // Use this for initialization
     void Start()
@@ -16,6 +19,9 @@ public class CardPress : MonoBehaviour
         animator = GetComponent<Animator>();
         animator2 = otherScroll1.GetComponent<Animator>();
         animator3 = otherScroll2.GetComponent<Animator>();
+        scrollDisplay = GetComponent<ScrollDisplay>();
+        scrollDisplay2 = otherScroll1.GetComponent<ScrollDisplay>();
+        scrollDisplay3 = otherScroll2.GetComponent<ScrollDisplay>();
     }
 
     // Update is called once per frame
@@ -26,8 +32,21 @@ public class CardPress : MonoBehaviour
 
     public void cardPress()
     {
-        animator.SetBool("isActive", true);
-        animator2.SetBool("isActive", false);
-        animator3.SetBool("isActive", false);
+        scrollDisplay.isActive = true;
+        scrollDisplay2.isActive = false;
+        scrollDisplay3.isActive = false;
+
+        animator.ResetTrigger("deactivate");
+        animator2.ResetTrigger("deactivate");
+        animator3.ResetTrigger("deactivate");
+
+        animator.ResetTrigger("active");
+        animator2.ResetTrigger("active");
+        animator3.ResetTrigger("active");
+
+        animator.SetTrigger("active");
+        animator2.SetTrigger("deactivate");
+        animator3.SetTrigger("deactivate");
+
     }
 }

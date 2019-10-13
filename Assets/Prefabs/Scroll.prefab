@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 2129953157922930313}
   - component: {fileID: 5103583363358682901}
   - component: {fileID: 798535878205824059}
-  - component: {fileID: 833311804184996900}
+  - component: {fileID: 2628046785224467446}
   m_Layer: 5
   m_Name: card_emblem
   m_TagString: Untagged
@@ -214,7 +214,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 755453789
-  m_SortingOrder: 5
+  m_SortingOrder: 99
   m_TargetDisplay: 0
 --- !u!114 &5103583363358682901
 MonoBehaviour:
@@ -255,7 +255,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &833311804184996900
+--- !u!114 &2628046785224467446
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,7 +264,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 880518303918529287}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66f3dc2228b6daf4cacbccebbf3a199d, type: 3}
+  m_Script: {fileID: 11500000, guid: f4183b559fe3e814d8ec410366dfb14e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 0}
@@ -341,7 +341,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 755453789
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 15
   m_Sprite: {fileID: -1229157979754498921, guid: 78785e123caa5c9499f7a0f119e50a5b,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -400,6 +400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scroll: {fileID: 11400000, guid: 0ac053b2e75ccac4fa64ade176f73a44, type: 2}
+  isActive: 0
   nameText: {fileID: 2307235026375201011}
   effectText: {fileID: 4024036581144955867}
   artworkImage: {fileID: 3326550971429844914}
@@ -463,8 +464,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.94117653, g: 0.9058824, b: 0.82745105, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -536,7 +537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.94117653, g: 0.9058824, b: 0.82745105, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -764,7 +765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.94117653, g: 0.9058824, b: 0.82745105, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -840,7 +841,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 755453789
-  m_SortingOrder: 5
+  m_SortingOrder: 99
   m_TargetDisplay: 0
 --- !u!114 &7791366623915305569
 MonoBehaviour:

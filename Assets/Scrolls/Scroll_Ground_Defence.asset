@@ -15,6 +15,10 @@ MonoBehaviour:
   id: 2
   name: Ground Defence
   effect: Take no damage for the next turn.
+  energyType: earth
   artwork: {fileID: 4902729985760503732, guid: cf1b3ad20ec9d934fa8ba5b6188fdebd, type: 3}
   energy: {fileID: -4595943962039868564, guid: 8d37205dd86f1e64f81e34228c838514, type: 3}
   type: 1
+  damage: 0
+  heal: 0
+  conditions: []

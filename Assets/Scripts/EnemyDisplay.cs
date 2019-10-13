@@ -14,8 +14,7 @@ public class EnemyDisplay : MonoBehaviour
     private HealthManager theHM;
     private SpriteRenderer theSR;
 
-    // Start is called before the first frame update
-    void Start()
+    public void assignInfo()
     {
         theHM = GetComponent<HealthManager>();
         theSR = GetComponent<SpriteRenderer>();
@@ -26,13 +25,5 @@ public class EnemyDisplay : MonoBehaviour
         weapon1.GetComponent<SpriteRenderer>().sprite = enemy.weapon1;
         weapon2.GetComponent<SpriteRenderer>().sprite = enemy.weapon2;
         theSR.sprite = body;
-
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

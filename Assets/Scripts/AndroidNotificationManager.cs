@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Notifications.Android;
+using Firebase;
+using Firebase.Database;
+using Firebase.Unity.Editor;
 
 public class AndroidNotificationManager : MonoBehaviour
 {
@@ -22,6 +25,13 @@ public class AndroidNotificationManager : MonoBehaviour
         AndroidNotificationCenter.RegisterNotificationChannel(defaultNotificationChannel);
 
         newFriendNotification();
+
+        // Set up the Editor before calling into the realtime database.
+        FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://YOUR-FIREBASE-APP.firebaseio.com/");
+
+        // Get the root reference location of the database.
+        DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+
     }
 
     // Update is called once per frame
@@ -43,6 +53,15 @@ public class AndroidNotificationManager : MonoBehaviour
 
         identifier = AndroidNotificationCenter.SendNotification(notification, "channel_id");
 
+    }
 
+    void HandleChildAdded(object sender, ChildChangedEventArgs args)
+    {
+        if (args.DatabaseError != null)
+        {
+            Debug.LogError(args.DatabaseError.Message);
+            return;
+        }
+        // Do something with the data in args.Snapshot
     }
 }

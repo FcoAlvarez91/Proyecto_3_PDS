@@ -5,9 +5,6 @@ using UnityEngine;
 public class PlayScroll : MonoBehaviour
 {
 
-    private Animator animator1;
-    private Animator animator2;
-    private Animator animator3;
     public GameObject scroll1;
     public GameObject scroll2;
     public GameObject scroll3;
@@ -15,63 +12,35 @@ public class PlayScroll : MonoBehaviour
     private ScrollDisplay scrollDisplay2;
     private ScrollDisplay scrollDisplay3;
 
-    public GameObject enemy1;
-    public GameObject enemy2;
-    public GameObject enemy3;
+    public GameObject activeScroll;
 
     // Start is called before the first frame update
     void Start()
     {
-        animator1 = scroll1.GetComponent<Animator>();
-        animator2 = scroll2.GetComponent<Animator>();
-        animator3 = scroll3.GetComponent<Animator>();
         scrollDisplay1 = scroll1.GetComponent<ScrollDisplay>();
         scrollDisplay2 = scroll2.GetComponent<ScrollDisplay>();
-        scrollDisplay3 = scroll3.GetComponent<ScrollDisplay>();
-        
+        scrollDisplay3 = scroll3.GetComponent<ScrollDisplay>(); 
     }
 
-    // Update is called once per frame
-    void Update()
+    public void setActiveScroll()
     {
-        
-    }
-
-    public void runScroll()
-    {
-        //scroll1.SetActive(false);
-        //scroll2.SetActive(false);
-        //scroll3.SetActive(false);
-        if (animator1.GetBool("isActive"))
+        if (scrollDisplay1.isActive)
         {
-            scrollRead(scrollDisplay1.scroll);
+            activeScroll.GetComponent<ScrollHolder>().setScroll(scrollDisplay1.scroll);
+            scroll2.GetComponent<Animator>().SetBool("notTurn", true);
+            scroll3.GetComponent<Animator>().SetBool("notTurn", true);
         }
-        else if (animator2.GetBool("isActive"))
+        else if (scrollDisplay2.isActive)
         {
-            scrollRead(scrollDisplay2.scroll);
+            activeScroll.GetComponent<ScrollHolder>().setScroll(scrollDisplay2.scroll);
+            scroll1.GetComponent<Animator>().SetBool("notTurn", true);
+            scroll3.GetComponent<Animator>().SetBool("notTurn", true);
         }
-        else if (animator3.GetBool("isActive"))
+        else if (scrollDisplay3.isActive)
         {
-            scrollRead(scrollDisplay3.scroll);
-        }
-        animator1.SetBool("isActive", false);
-        animator2.SetBool("isActive", false);
-        animator3.SetBool("isActive", false);
-    }
-
-    public void scrollRead(Scroll scroll)
-    {
-        if(scroll.id == 0)
-        {
-
-        }
-        else if (scroll.id == 1)
-        {
-
-        }
-        else if (scroll.id == 2)
-        {
-
+            activeScroll.GetComponent<ScrollHolder>().setScroll(scrollDisplay3.scroll);
+            scroll1.GetComponent<Animator>().SetBool("notTurn", true);
+            scroll2.GetComponent<Animator>().SetBool("notTurn", true);
         }
     }
 }

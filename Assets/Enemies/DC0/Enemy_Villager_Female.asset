@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e1dbd5c60f750247a27b8868bf18beb, type: 3}
+  m_Name: Enemy_Villager_Female
+  m_EditorClassIdentifier: 
+  name: Villager Female
+  damage: 3
+  maxHP: 10
+  difficulty: 0
+  body: {fileID: 7157600387873164263, guid: 89e26e054ffaef84dbed1b42bdc78e48, type: 3}
+  weapon1: {fileID: -761887118410055393, guid: 48a7d0ea58047074b9e67d9ae35e2f3b, type: 3}
+  weapon2: {fileID: 0}
