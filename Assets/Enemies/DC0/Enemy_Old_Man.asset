@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Old Man
   damage: 2
-  maxHP: 10
+  maxHP: 5
   difficulty: 0
-  body: {fileID: 2847146871089419931, guid: 89e26e054ffaef84dbed1b42bdc78e48, type: 3}
+  body: {fileID: 21300028, guid: 89e26e054ffaef84dbed1b42bdc78e48, type: 3}
   weapon1: {fileID: 9147546874185701050, guid: 48a7d0ea58047074b9e67d9ae35e2f3b, type: 3}
   weapon2: {fileID: 0}

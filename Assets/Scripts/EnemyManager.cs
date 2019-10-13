@@ -56,9 +56,9 @@ public class EnemyManager : MonoBehaviour
 
         if (level == 0)
         {
-            en1 = enemyDC0[IDenemy1];
-            en2 = enemyDC0[IDenemy2];
-            en3 = enemyDC0[IDenemy3];
+            en1 = enemyDC0[1];
+            en2 = enemyDC0[2];
+            en3 = enemyDC0[3];
             grid0.SetActive(true);
             grid1.SetActive(false);
             grid2.SetActive(false);
@@ -66,9 +66,9 @@ public class EnemyManager : MonoBehaviour
         }
         else if (level <= 2)
         {
-            en1 = enemyDC0[IDenemy1];
-            en2 = enemyDC1[IDenemy2];
-            en3 = enemyDC0[IDenemy3];
+            en1 = enemyDC0[1];
+            en2 = enemyDC1[2];
+            en3 = enemyDC0[3];
             grid0.SetActive(true);
             grid1.SetActive(false);
             grid2.SetActive(false);
@@ -76,9 +76,9 @@ public class EnemyManager : MonoBehaviour
         }
         else if (level <= 4)
         {
-            en1 = enemyDC1[IDenemy1];
-            en2 = enemyDC1[IDenemy2];
-            en3 = enemyDC0[IDenemy3];
+            en1 = enemyDC1[1];
+            en2 = enemyDC1[2];
+            en3 = enemyDC0[3];
             grid0.SetActive(false);
             grid1.SetActive(true);
             grid2.SetActive(false);
@@ -86,9 +86,9 @@ public class EnemyManager : MonoBehaviour
         }
         else if (level <= 6)
         {
-            en1 = enemyDC0[IDenemy1];
-            en2 = enemyDC2[IDenemy2];
-            en3 = enemyDC1[IDenemy3];
+            en1 = enemyDC0[1];
+            en2 = enemyDC2[2];
+            en3 = enemyDC1[3];
             grid0.SetActive(false);
             grid1.SetActive(true);
             grid2.SetActive(false);
@@ -96,9 +96,9 @@ public class EnemyManager : MonoBehaviour
         }
         else if (level <= 8)
         {
-            en1 = enemyDC1[IDenemy1];
-            en2 = enemyDC2[IDenemy2];
-            en3 = enemyDC1[IDenemy3];
+            en1 = enemyDC1[1];
+            en2 = enemyDC2[2];
+            en3 = enemyDC1[3];
             grid0.SetActive(false);
             grid1.SetActive(false);
             grid2.SetActive(true);
@@ -117,9 +117,9 @@ public class EnemyManager : MonoBehaviour
         }
         else
         {
-            en1 = enemyDC2[IDenemy1];
-            en2 = enemyDC2[IDenemy2];
-            en3 = enemyDC2[IDenemy3];
+            en1 = enemyDC2[1];
+            en2 = enemyDC2[2];
+            en3 = enemyDC2[3];
             grid0.SetActive(false);
             grid1.SetActive(false);
             grid2.SetActive(true);

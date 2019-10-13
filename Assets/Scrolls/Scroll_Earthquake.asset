@@ -16,8 +16,7 @@ MonoBehaviour:
   name: Earthquake
   effect: An enemy takes low damage.
   energyType: earth
-  artwork: {fileID: -7668790182515900673, guid: cf1b3ad20ec9d934fa8ba5b6188fdebd,
-    type: 3}
+  artwork: {fileID: 21300072, guid: cf1b3ad20ec9d934fa8ba5b6188fdebd, type: 3}
   energy: {fileID: -4595943962039868564, guid: 8d37205dd86f1e64f81e34228c838514, type: 3}
   type: 2
   damage: 2

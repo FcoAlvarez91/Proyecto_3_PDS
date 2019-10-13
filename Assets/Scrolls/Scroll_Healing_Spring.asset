@@ -16,8 +16,7 @@ MonoBehaviour:
   name: Healing Spring
   effect: An ally is healed for a medium amount.
   energyType: water
-  artwork: {fileID: -6464482783528114672, guid: cf1b3ad20ec9d934fa8ba5b6188fdebd,
-    type: 3}
+  artwork: {fileID: 21300222, guid: cf1b3ad20ec9d934fa8ba5b6188fdebd, type: 3}
   energy: {fileID: -9141224354410591307, guid: 8d37205dd86f1e64f81e34228c838514, type: 3}
   type: 3
   damage: 0

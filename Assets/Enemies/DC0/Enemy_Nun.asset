@@ -14,10 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Nun
   damage: 2
-  maxHP: 10
+  maxHP: 5
   difficulty: 0
-  body: {fileID: 7101010022185134795, guid: 89e26e054ffaef84dbed1b42bdc78e48, type: 3}
-  weapon1: {fileID: -8951780388439148649, guid: 48a7d0ea58047074b9e67d9ae35e2f3b,
-    type: 3}
-  weapon2: {fileID: -8951780388439148649, guid: 48a7d0ea58047074b9e67d9ae35e2f3b,
-    type: 3}
+  body: {fileID: 21300022, guid: 89e26e054ffaef84dbed1b42bdc78e48, type: 3}
+  weapon1: {fileID: 9147546874185701050, guid: 48a7d0ea58047074b9e67d9ae35e2f3b, type: 3}
+  weapon2: {fileID: 0}
