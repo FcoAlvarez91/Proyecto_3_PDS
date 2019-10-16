@@ -45,6 +45,7 @@ public class TurnManager : MonoBehaviour
     void Start()
     {
         targetText.text = "LOADING";
+        background.SetActive(true);
         GetComponent<ToggleButtons>().predeactivateButtons();
 
         auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
@@ -53,15 +54,14 @@ public class TurnManager : MonoBehaviour
 
         loadDB();
         StartCoroutine(WaitForStart());
-        InvokeRepeating("gameChangeLoadDB", 5.0f, 10f);
-        InvokeRepeating("gameChangeStart", 7.0f, 10f);
+        //InvokeRepeating("gameChangeLoadDB", 5.0f, 10f);
+        //InvokeRepeating("gameChangeStart", 7.0f, 10f);
     }
 
     IEnumerator WaitForStart()
     {
         yield return new WaitForSeconds(3);
         gameStart();
-        background.SetActive(false);
         ledger.SetActive(true);
     }
 
@@ -93,7 +93,7 @@ public class TurnManager : MonoBehaviour
         });
     }
 
-    void gameChangeLoadDB()
+    /* void gameChangeLoadDB()
     {
         Debug.Log("Checking change.");
         if (change)
@@ -116,13 +116,11 @@ public class TurnManager : MonoBehaviour
             change2 = false;
             gameStart();
         }
-    }
+    } */
 
     public void gameStart()
     {
-        targetText.text = "CHOOSE A SCROLL";
         GetComponent<ToggleButtons>().predeactivateButtons();
-        background.SetActive(false);
         ledger.SetActive(true);
         enemies.getEnemies();
         enemies.pullMageInfo();
@@ -146,7 +144,7 @@ public class TurnManager : MonoBehaviour
             }
         }
            
-        checkTurnEnd();
+        checkTurnMoment();
     }
 
     // Update is called once per frame
@@ -159,7 +157,7 @@ public class TurnManager : MonoBehaviour
     public void newTurn()
     {
         Debug.Log("New turn.");
-        reference.Child("games").Child(GameManager.currentGame).Child("start_" + GetComponent<PlayerManager>().mageElement).SetValueAsync(0);
+        background.SetActive(false);
         enemies.getEnemies();
         targetText.text = "CHOOSE A SCROLL";
         scrolls.pullFromDeck();
@@ -181,17 +179,18 @@ public class TurnManager : MonoBehaviour
         Debug.Log("Enemy turn ended.");
         enemies.sendMageInfo();
         enemies.sendEnemyInfo();
-        reference.Child("games").Child(GameManager.currentGame).Child("turn").RemoveValueAsync();
+        reference.Child("games").Child(GameManager.currentGame).Child("effect_" + auth.CurrentUser.Email).Child("scroll").SetValueAsync(-1);
         reference.Child("games").Child(GameManager.currentGame).Child("turnEnded").SetValueAsync(0);
 
-        reference.Child("games").Child(GameManager.currentGame).Child("start_" + GetComponent<PlayerManager>().mageElement).SetValueAsync(1);
+        reference.Child("games").Child(GameManager.currentGame).Child("starts").Child("start_" + GetComponent<PlayerManager>().mageElement).SetValueAsync(1);
 
-        change = true;
+        //change = true;
         Debug.Log("Change.");
     }
 
     public void getAndRunScrolls()
-    { 
+    {
+        targetText.text = "TURN OVER";
         Dictionary<string, object> turnDict = (Dictionary<string, object>)data["turn"];
         foreach (var dict in turnDict)
         {
@@ -231,22 +230,39 @@ public class TurnManager : MonoBehaviour
             
     }
 
-    public void checkTurnEnd()
+    public void checkTurnMoment()
     {
         if(int.Parse(data["turnEnded"].ToString()) == 1)
         {
-            change = true;
+            //change = true;
+            background.SetActive(true);
             scrolls.notTurn();
             getAndRunScrolls();
         }
         else
         {
             Debug.Log(GetComponent<PlayerManager>().mageElement);
-            if (int.Parse(data["start_" + GetComponent<PlayerManager>().mageElement].ToString()) == 1)
-            {
-                change = true;
-                newTurn();
 
+            Dictionary<string, object> starts = (Dictionary<string, object>)data["starts"];
+            foreach (var start in starts)
+            {
+                if (start.Key == "start_" + GetComponent<PlayerManager>().mageElement)
+                {
+                    if (start.Value.ToString() == "1")
+                    {
+                        background.SetActive(false);
+                        scrolls.notTurn();
+                        //change = true;
+                        newTurn();
+
+                    }
+                    else
+                    {
+                        background.SetActive(true);
+                        targetText.text = "RESOLVING TURNS";
+                        scrolls.notTurn();
+                    }
+                }
             }
         }
     }

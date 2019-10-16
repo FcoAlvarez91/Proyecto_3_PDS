@@ -134,6 +134,61 @@ public class EnemyManager : MonoBehaviour
     }
 
 
+    public void setEnemiesLevel()
+    {
+        Enemy en1 = null;
+        Enemy en2 = null;
+        Enemy en3 = null;
+        level = int.Parse(TurnManager.data["level"].ToString());
+
+        if (level == 0)
+        {
+            en1 = enemyDC0[1];
+            en2 = enemyDC0[2];
+            en3 = enemyDC0[3];
+        }
+        else if (level <= 2)
+        {
+            en1 = enemyDC0[0];
+            en2 = enemyDC1[0];
+            en3 = enemyDC0[2];
+        }
+        else if (level <= 4)
+        {
+            en1 = enemyDC1[1];
+            en2 = enemyDC1[2];
+            en3 = enemyDC0[3];
+        }
+        else if (level <= 6)
+        {
+            en1 = enemyDC0[1];
+            en2 = enemyDC2[0];
+            en3 = enemyDC1[3];
+        }
+        else if (level <= 8)
+        {
+            en1 = enemyDC1[1];
+            en2 = enemyDC2[1];
+            en3 = enemyDC1[3];
+        }
+        else if (level == 10)
+        {
+            en1 = enemyDC3[0];
+            en2 = enemyDC3[1];
+            en3 = enemyDC3[2];
+        }
+        else
+        {
+            en1 = enemyDC2[1];
+            en2 = enemyDC2[2];
+            en3 = enemyDC2[3];
+        }
+
+        TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("enemy1").SetValueAsync(en1.maxHP);
+        TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("enemy2").SetValueAsync(en2.maxHP);
+        TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("enemy3").SetValueAsync(en3.maxHP);
+    }
+
     public void assignEnemies(Enemy en1, Enemy en2, Enemy en3)
     {
         disp1.enemy = en1;
@@ -200,6 +255,7 @@ public class EnemyManager : MonoBehaviour
             level++;
             TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("levelUp").SetValueAsync(1);
             TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("level").SetValueAsync(level);
+            setEnemiesLevel();
         }
         Debug.Log("Enemy turn ending.");
     }

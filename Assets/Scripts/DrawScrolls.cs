@@ -32,9 +32,9 @@ public class DrawScrolls : MonoBehaviour
     public void pullFromDeck()
     {
         // ----- Change this for db scroll pick ----- //
-        int IDscroll1 = (int)Random.Range(0, 4);
-        int IDscroll2 = (int)Random.Range(0, 4);
-        int IDscroll3 = (int)Random.Range(0, 4);
+        int IDscroll1 = (int)Random.Range(0, 5);
+        int IDscroll2 = (int)Random.Range(0, 5);
+        int IDscroll3 = (int)Random.Range(0, 5);
         // ----------------------------------------- //
 
         scrollAnimator1.SetBool("notTurn", false);

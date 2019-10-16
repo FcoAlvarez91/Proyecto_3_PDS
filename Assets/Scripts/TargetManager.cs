@@ -56,6 +56,7 @@ public class TargetManager : MonoBehaviour
         string added = "effect_" + TurnManager.auth.CurrentUser.Email.ToString().Replace('.',',');
         TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("turn").Child(added).Child("scroll").SetValueAsync(scroll.id);
         TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("turn").Child(added).Child("target").SetValueAsync(targetName);
-        TurnManager.change = true;
+        TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("starts").Child("start_" + player.mageElement).SetValueAsync(0);
+        //TurnManager.change = true;
     }
 }
