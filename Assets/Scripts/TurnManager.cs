@@ -62,7 +62,6 @@ public class TurnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         gameStart();
-        ledger.SetActive(true);
     }
 
     public void loadDB()
@@ -239,6 +238,7 @@ public class TurnManager : MonoBehaviour
         if(int.Parse(data["turnEnded"].ToString()) == 1)
         {
             //change = true;
+            ledger.SetActive(false);
             background.SetActive(true);
             scrolls.notTurn();
 
