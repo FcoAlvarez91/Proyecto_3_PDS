@@ -43,17 +43,7 @@ public class EnemyDisplay : MonoBehaviour
 
     public void getEnemyInfo(string enemyName)
     {
-        if(TurnManager.data["levelUp"].ToString() == "1")
-        {
-            Debug.Log("Leveling up.");
-            theHM.currentHealth = enemy.maxHP;
-            TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("levelUp").SetValueAsync(0);
-            TurnManager.reference.Child("games").Child(GameManager.currentGame).Child(enemyName).SetValueAsync(0);
-        }
-        else
-        {
-            Debug.Log("HP assigned.");
-            theHM.currentHealth = int.Parse(TurnManager.data[theTM.targetName].ToString());
-        }
+        Debug.Log("HP assigned.");
+        theHM.currentHealth = int.Parse(TurnManager.data[theTM.targetName].ToString());
     }
 }
