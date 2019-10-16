@@ -229,12 +229,9 @@ public class UIManager : MonoBehaviour
     public void getActiveGameList()
     {
         var data = new Dictionary<string, object>();
-        //Debug.Log("este ese el mail: " + auth.CurrentUser.Email);
         data["email"] = auth.CurrentUser.Email;
         data["push"] = true;
-        //Debug.Log("getInvites");
         var function = Firebase.Functions.FirebaseFunctions.DefaultInstance.GetHttpsCallable("getActiveGames");
-        //Debug.Log("function = " + function.GetType());
         function.CallAsync(data).ContinueWith((task) =>
         {
             if (task.IsFaulted)
@@ -399,7 +396,7 @@ public class UIManager : MonoBehaviour
     {
         if(activeGameListMade == false)
         {
-            foreach (KeyValuePair<object, object> game in gameInvRequestList)
+            foreach (KeyValuePair<object, object> game in activeGamesList)
             {
                 makeActiveGameListItem(game.Value.ToString());
             }
