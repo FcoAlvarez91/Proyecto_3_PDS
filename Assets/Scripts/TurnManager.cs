@@ -62,7 +62,6 @@ public class TurnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         gameStart();
-        ledger.SetActive(true);
     }
 
     public void loadDB()
@@ -121,9 +120,7 @@ public class TurnManager : MonoBehaviour
     public void gameStart()
     {
         GetComponent<ToggleButtons>().predeactivateButtons();
-        ledger.SetActive(true);
-        enemies.getEnemies();
-        enemies.pullMageInfo();
+
         Dictionary<string, object> players = (Dictionary<string, object>)data["players"];
         foreach (var player in players)
         {
@@ -143,7 +140,9 @@ public class TurnManager : MonoBehaviour
                 GetComponent<PlayerManager>().setElement(player.Value.ToString());
             }
         }
-           
+        enemies.getEnemies();
+        enemies.pullMageInfo();
+
         checkTurnMoment();
     }
 
@@ -157,6 +156,7 @@ public class TurnManager : MonoBehaviour
     public void newTurn()
     {
         Debug.Log("New turn.");
+        ledger.SetActive(true);
         background.SetActive(false);
         enemies.getEnemies();
         targetText.text = "CHOOSE A SCROLL";
@@ -180,9 +180,12 @@ public class TurnManager : MonoBehaviour
         enemies.sendMageInfo();
         enemies.sendEnemyInfo();
         reference.Child("games").Child(GameManager.currentGame).Child("effect_" + auth.CurrentUser.Email).Child("scroll").SetValueAsync(-1);
+        reference.Child("games").Child(GameManager.currentGame).Child("starts").Child("start_fire").SetValueAsync(1);
+        reference.Child("games").Child(GameManager.currentGame).Child("starts").Child("start_water").SetValueAsync(1);
+        reference.Child("games").Child(GameManager.currentGame).Child("starts").Child("start_earth").SetValueAsync(1);
+        reference.Child("games").Child(GameManager.currentGame).Child("starts").Child("start_wind").SetValueAsync(1);
         reference.Child("games").Child(GameManager.currentGame).Child("turnEnded").SetValueAsync(0);
 
-        reference.Child("games").Child(GameManager.currentGame).Child("starts").Child("start_" + GetComponent<PlayerManager>().mageElement).SetValueAsync(1);
 
         //change = true;
         Debug.Log("Change.");
@@ -235,9 +238,24 @@ public class TurnManager : MonoBehaviour
         if(int.Parse(data["turnEnded"].ToString()) == 1)
         {
             //change = true;
+            ledger.SetActive(false);
             background.SetActive(true);
             scrolls.notTurn();
-            getAndRunScrolls();
+
+            if (enemy1.GetComponent<HealthManager>().currentHealth <= 0 &&
+                enemy2.GetComponent<HealthManager>().currentHealth <= 0 &&
+                enemy3.GetComponent<HealthManager>().currentHealth <= 0)
+            {
+
+                int level = int.Parse(TurnManager.data["level"].ToString());
+                level++;
+                Debug.Log("Level Up!");
+                enemies.setEnemiesLevel(level);
+            }
+            else
+            {
+                getAndRunScrolls();
+            }
         }
         else
         {
