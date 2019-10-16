@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abb2cf1f0c423d0438cc79e1289d059d, type: 3}
   m_Name: Scroll_Earthquake
   m_EditorClassIdentifier: 
-  id: 3
+  id: 1
   name: Earthquake
-  effect: An enemy takes low damage.
+  effect: An enemy takes low damage and is stunned.
   energyType: earth
   artwork: {fileID: 21300072, guid: cf1b3ad20ec9d934fa8ba5b6188fdebd, type: 3}
   energy: {fileID: -4595943962039868564, guid: 8d37205dd86f1e64f81e34228c838514, type: 3}
-  type: 2
+  type: condition
   damage: 2
   heal: 0
-  conditions: []
+  conditions:
+  - Stunned

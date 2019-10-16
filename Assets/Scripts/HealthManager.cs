@@ -11,7 +11,6 @@ public class HealthManager : MonoBehaviour
     private Animator anim;
     public Slider healthBar;
     public List<string> conditions;
-    //public SFXManager sfxMan;
 
 
     // Start is called before the first frame update
@@ -30,6 +29,10 @@ public class HealthManager : MonoBehaviour
         {
             anim.SetBool("isDead", false);
         }
+        else
+        {
+            anim.SetBool("isDead", true);
+        }
     }
 
     public void HurtEntity(int damageToGive)
@@ -42,13 +45,12 @@ public class HealthManager : MonoBehaviour
             }
             if (cond == "Vulnerable")
             {
-                damageToGive = damageToGive + 1;
+                damageToGive = damageToGive + 2;
             }
         }
 
         currentHealth -= damageToGive;
-        //sfxMan.playerHurt.Play();
-        if(currentHealth <= 0)
+        if (currentHealth <= 0)
         {
             currentHealth = 0;
             anim.SetBool("isDead", true);
@@ -57,11 +59,21 @@ public class HealthManager : MonoBehaviour
 
     public void HealEntity(int healthToGive)
     {
-        currentHealth += healthToGive;
-        if (currentHealth > maxHealth)
+        if(currentHealth > 0)
         {
-            currentHealth = maxHealth;
-        }       
+            foreach (string cond in conditions)
+            {
+                if (cond == "Wounds")
+                {
+                    healthToGive = healthToGive - 2;
+                }
+            }
+            currentHealth += healthToGive;
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+        }
     }
 
     public void setCondition(string condition)

@@ -17,29 +17,18 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int rng = Random.Range(0, 4);
-        if (rng == 0)
-        {
-            setElement("fire");
-        }
-        if (rng == 1)
-        {
-            setElement("water");
-        }
-        if (rng == 2)
-        {
-            setElement("earth");
-        }
-        if (rng == 3)
-        {
-            setElement("wind");
-        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(currentMage.GetComponent<HealthManager>().currentHealth <= 0)
+
+    }
+
+    public void checkGameOver()
+    {
+        if (currentMage.GetComponent<HealthManager>().currentHealth <= 0)
         {
             SceneManager.LoadScene("Game Over");
         }

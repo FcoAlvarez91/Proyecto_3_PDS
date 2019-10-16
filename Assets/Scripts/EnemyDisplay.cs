@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Firebase;
+using Firebase.Database;
+using Firebase.Unity.Editor;
+using Firebase.Functions;
 
 public class EnemyDisplay : MonoBehaviour
 {
@@ -13,17 +17,43 @@ public class EnemyDisplay : MonoBehaviour
     public GameObject weapon2;
     private HealthManager theHM;
     private SpriteRenderer theSR;
+    private TargetManager theTM;
 
-    public void assignInfo()
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+
+    public void assignInfo(string enemyName)
     {
         theHM = GetComponent<HealthManager>();
         theSR = GetComponent<SpriteRenderer>();
+        theTM = GetComponent<TargetManager>();
 
         theHM.maxHealth = enemy.maxHP;
-        theHM.currentHealth = enemy.maxHP;
         body = enemy.body;
         weapon1.GetComponent<SpriteRenderer>().sprite = enemy.weapon1;
         weapon2.GetComponent<SpriteRenderer>().sprite = enemy.weapon2;
         theSR.sprite = body;
+
+        getEnemyInfo(enemyName);
+    }
+
+    public void getEnemyInfo(string enemyName)
+    {
+        if(TurnManager.data["levelUp"].ToString() == "1")
+        {
+            Debug.Log("Leveling up.");
+            theHM.currentHealth = enemy.maxHP;
+            TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("levelUp").SetValueAsync(0);
+            TurnManager.reference.Child("games").Child(GameManager.currentGame).Child(enemyName).SetValueAsync(0);
+        }
+        else
+        {
+            Debug.Log("HP assigned.");
+            theHM.currentHealth = int.Parse(TurnManager.data[theTM.targetName].ToString());
+        }
     }
 }

@@ -27,21 +27,19 @@ public class DrawScrolls : MonoBehaviour
         scrollAnimator1 = scroll1.GetComponent<Animator>();
         scrollAnimator2 = scroll2.GetComponent<Animator>();
         scrollAnimator3 = scroll3.GetComponent<Animator>();
-
-        pullFromDeck();
     }
 
     public void pullFromDeck()
     {
         // ----- Change this for db scroll pick ----- //
-        int IDscroll1 = (int)Random.Range(0, deckOptions.Length);
-        int IDscroll2 = (int)Random.Range(0, deckOptions.Length);
-        int IDscroll3 = (int)Random.Range(0, deckOptions.Length);
+        int IDscroll1 = (int)Random.Range(0, 4);
+        int IDscroll2 = (int)Random.Range(0, 4);
+        int IDscroll3 = (int)Random.Range(0, 4);
         // ----------------------------------------- //
 
-        scroll1.GetComponent<Animator>().SetBool("notTurn", false);
-        scroll2.GetComponent<Animator>().SetBool("notTurn", false);
-        scroll3.GetComponent<Animator>().SetBool("notTurn", false);
+        scrollAnimator1.SetBool("notTurn", false);
+        scrollAnimator2.SetBool("notTurn", false);
+        scrollAnimator3.SetBool("notTurn", false);
 
         Scroll sc1 = deckOptions[IDscroll1];
         Scroll sc2 = deckOptions[IDscroll2];
@@ -52,6 +50,13 @@ public class DrawScrolls : MonoBehaviour
         scrollAnimator1.SetTrigger("draw");
         scrollAnimator2.SetTrigger("draw");
         scrollAnimator3.SetTrigger("draw");
+    }
+
+    public void notTurn()
+    {
+        scrollAnimator1.SetBool("notTurn", true);
+        scrollAnimator2.SetBool("notTurn", true);
+        scrollAnimator3.SetBool("notTurn", true);
     }
 
     public void assignScroll(Scroll deckScroll1, Scroll deckScroll2, Scroll deckScroll3)

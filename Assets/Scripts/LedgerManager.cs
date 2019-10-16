@@ -6,6 +6,7 @@ using TMPro;
 public class LedgerManager : MonoBehaviour
 {
     public TextMeshProUGUI ledgerText; 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,14 +19,27 @@ public class LedgerManager : MonoBehaviour
 
     }
 
-    public void write(string str)
+    public void write(string str, int num)
     {
-        ledgerText.text = ledgerText.text.ToString() + "\n" + str;
+        TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("ledger").Child("entry" + num).SetValueAsync(str);
+    }
+
+    public void pullLedger()
+    {
+        Dictionary<string, object> turnDict = (Dictionary<string, object>)TurnManager.data["ledger"];
+        foreach (var dict in turnDict)
+        {
+            ledgerText.text = ledgerText.text.ToString() + "\n" + dict.Value.ToString();
+        }
     }
 
     public void resetLedger()
     {
         ledgerText.text = "Ledger:" + "\n";
+        TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("ledger").Child("entry1").RemoveValueAsync();
+        TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("ledger").Child("entry2").RemoveValueAsync();
+        TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("ledger").Child("entry3").RemoveValueAsync();
+        Debug.Log("Ledger reset.");
     }
 
     public void openCloseLedger()
