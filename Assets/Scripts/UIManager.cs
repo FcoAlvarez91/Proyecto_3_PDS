@@ -115,7 +115,6 @@ public class UIManager : MonoBehaviour
         Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
         Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
         Debug.Log("Firebase Messaging Initialized");
-        //getInvites();
     }
 
     // Update is called once per frame
@@ -182,7 +181,6 @@ public class UIManager : MonoBehaviour
             loginMenu.SetActive(false);
 
         });
-        //inviteWait.Wait();
     }
 
     public void sendRequest()
@@ -203,8 +201,6 @@ public class UIManager : MonoBehaviour
 
     public void getInvites()
     {
-        // Call the function and extract the operation from the result.
-        //var inviteWait = makeRequestButtons();
         var data = new Dictionary<string, object>();
         //Debug.Log("este ese el mail: " + auth.CurrentUser.Email);
         data["email"] = auth.CurrentUser.Email;
