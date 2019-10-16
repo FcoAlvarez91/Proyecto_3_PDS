@@ -134,12 +134,11 @@ public class EnemyManager : MonoBehaviour
     }
 
 
-    public void setEnemiesLevel()
+    public void setEnemiesLevel(int level)
     {
         Enemy en1 = null;
         Enemy en2 = null;
         Enemy en3 = null;
-        level = int.Parse(TurnManager.data["level"].ToString());
 
         if (level == 0)
         {
@@ -187,6 +186,7 @@ public class EnemyManager : MonoBehaviour
         TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("enemy1").SetValueAsync(en1.maxHP);
         TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("enemy2").SetValueAsync(en2.maxHP);
         TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("enemy3").SetValueAsync(en3.maxHP);
+        TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("level").SetValueAsync(level);
     }
 
     public void assignEnemies(Enemy en1, Enemy en2, Enemy en3)
@@ -255,7 +255,7 @@ public class EnemyManager : MonoBehaviour
             level++;
             TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("levelUp").SetValueAsync(1);
             TurnManager.reference.Child("games").Child(GameManager.currentGame).Child("level").SetValueAsync(level);
-            setEnemiesLevel();
+            setEnemiesLevel(level);
         }
         Debug.Log("Enemy turn ending.");
     }
