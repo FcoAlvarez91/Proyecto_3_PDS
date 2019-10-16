@@ -36,9 +36,11 @@ public class UIManager : MonoBehaviour
     public RectTransform statsGameListRT;
     public RectTransform previewInvsRT;
     public RectTransform requestInvGameListRT;
+    public RectTransform activeGameListRT;
     public Dictionary<object, object> friendList;
     public Dictionary<object, object> statistics;
     public Dictionary<object, object> gameInvRequestList;
+    public Dictionary<object, object> activeGamesList;
     public Dictionary<string, string> preGameInvSelection = new Dictionary<string, string>();
     private bool reqButtonsMade = false;
     private bool friendListButtonsMade = false;
@@ -47,6 +49,7 @@ public class UIManager : MonoBehaviour
     private bool previewGameListMade = false;
     private bool gameInvReqListMade = false;
     private bool statsListMade = false;
+    private bool activeGameListMade = false;
     private List<int> playersInvitedNum = new List<int>(){ 1, 2, 3 };
     public Button continueButton;
     //public FirebaseFunctions functions;
@@ -95,6 +98,7 @@ public class UIManager : MonoBehaviour
         getInvites();
         getStatistics();
         getGameInvRequestList();
+        getActiveGameList();
     }
 
     void OnDestroy()
@@ -189,8 +193,9 @@ public class UIManager : MonoBehaviour
         reference.Child("users").Child(friendReq.text.Replace('.', ',')).Child("invites").Child(key).SetValueAsync(user.Email);
     }
 
-    public void startGame()
+    public void startGame(string gameName)
     {
+        GameManager.currentGame = gameName;
         SceneManager.LoadScene("In Game");
     }
 
@@ -217,6 +222,28 @@ public class UIManager : MonoBehaviour
             else if (task.IsCompleted && task.Result.Data != null)
             {
                 requests = (Dictionary<object, object>)task.Result.Data;
+            }
+        });
+    }
+
+    public void getActiveGameList()
+    {
+        var data = new Dictionary<string, object>();
+        //Debug.Log("este ese el mail: " + auth.CurrentUser.Email);
+        data["email"] = auth.CurrentUser.Email;
+        data["push"] = true;
+        //Debug.Log("getInvites");
+        var function = Firebase.Functions.FirebaseFunctions.DefaultInstance.GetHttpsCallable("getActiveGames");
+        //Debug.Log("function = " + function.GetType());
+        function.CallAsync(data).ContinueWith((task) =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.Log("Ta mala la wea" + task.Exception);
+            }
+            else if (task.IsCompleted && task.Result.Data != null)
+            {
+                activeGamesList = (Dictionary<object, object>)task.Result.Data;
             }
         });
     }
@@ -368,13 +395,36 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void makeActiveGameList()
+    {
+        if(activeGameListMade == false)
+        {
+            foreach (KeyValuePair<object, object> game in gameInvRequestList)
+            {
+                makeActiveGameListItem(game.Value.ToString());
+            }
+            activeGameListMade = true;
+        }
+    }
+
+    public void makeActiveGameListItem(string gameName)
+    {
+        GameObject gameInListObj = Instantiate(reqGameInviteListItemGO);
+        gameInListObj.transform.SetParent(activeGameListRT, true);
+        gameInListObj.GetComponentInChildren<TextMeshProUGUI>().text = gameName;
+        Button button = gameInListObj.GetComponentInChildren<Button>();
+        button.onClick.AddListener(() => startGame(gameName));
+        gameInListObj.transform.localScale = new Vector3(1f, 1f, 1f);
+        gameInListObj.GetComponentInChildren<TextMeshProUGUI>().transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+    }
+
     public void makeGameInviteRequestListItem(string gameName)
     {
         GameObject gameInListObj = Instantiate(reqGameInviteListItemGO);
         gameInListObj.transform.SetParent(requestInvGameListRT, true);
         gameInListObj.GetComponentInChildren<TextMeshProUGUI>().text = gameName;
         Button button = gameInListObj.GetComponentInChildren<Button>();
-        //button.onClick.AddListener(() => acceptGameInvite(gameName, gameInListObj));
+        button.onClick.AddListener(() => acceptGameInvite(gameName));
         gameInListObj.transform.localScale = new Vector3(1f, 1f, 1f);
         gameInListObj.GetComponentInChildren<TextMeshProUGUI>().transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
     }
@@ -465,7 +515,23 @@ public class UIManager : MonoBehaviour
         }
         previewGameListMade = false;
         var function = Firebase.Functions.FirebaseFunctions.DefaultInstance.GetHttpsCallable("inviteFriendsToNewGame");
-        function.CallAsync(preGameInvSelection);
+        preGameInvSelection["creator"] = auth.CurrentUser.Email;
+        function.CallAsync(preGameInvSelection).ContinueWith((task) =>
+        {
+            if (task.IsComplete)
+            {
+                preGameInvSelection = new Dictionary<string, string>();
+            }
+        });
+    }
+
+    public void acceptGameInvite(string gameName)
+    {
+        var function = Firebase.Functions.FirebaseFunctions.DefaultInstance.GetHttpsCallable("acceptGameInvite");
+        var data = new Dictionary<string, string>();
+        data["email"] = auth.CurrentUser.Email;
+        data["gameId"] = gameName;
+        function.CallAsync(data);
     }
 
     public void emptyLists()
@@ -494,10 +560,16 @@ public class UIManager : MonoBehaviour
         {
             GameObject.Destroy(child.gameObject);
         }
+        foreach (Transform child in activeGameListRT)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
         reqButtonsMade = false;
         friendListButtonsMade = false;
         gameListInviteItemsMade = false;
         statisticListMade = false;
         previewGameListMade = false;
+        gameInvReqListMade = false;
+        activeGameListMade = false;
     }
 }

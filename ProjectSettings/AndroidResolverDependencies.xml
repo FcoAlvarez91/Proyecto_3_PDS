@@ -67,6 +67,8 @@
     <file>Assets/Plugins/Android/com.google.firebase.firebase-iid-20.0.0.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-iid-interop-17.0.0.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-measurement-connector-18.0.0.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-messaging-20.0.0.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-messaging-unity-6.5.0.aar</file>
     <file>Assets/Plugins/Android/com.squareup.okhttp3.okhttp-3.12.1.jar</file>
     <file>Assets/Plugins/Android/com.squareup.okio.okio-1.15.0.jar</file>
   </files>
