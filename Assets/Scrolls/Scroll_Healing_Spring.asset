@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abb2cf1f0c423d0438cc79e1289d059d, type: 3}
   m_Name: Scroll_Healing_Spring
   m_EditorClassIdentifier: 
-  id: 4
+  id: 2
   name: Healing Spring
   effect: An ally is healed for a medium amount.
   energyType: water
   artwork: {fileID: 21300222, guid: cf1b3ad20ec9d934fa8ba5b6188fdebd, type: 3}
   energy: {fileID: -9141224354410591307, guid: 8d37205dd86f1e64f81e34228c838514, type: 3}
-  type: 3
+  type: heal
   damage: 0
   heal: 4
   conditions: []

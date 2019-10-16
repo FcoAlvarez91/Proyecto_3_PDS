@@ -12,7 +12,7 @@ public class Scroll : ScriptableObject
 
     public Sprite artwork;
     public Sprite energy;
-    public int type;
+    public string type;
 
     public int damage;
     public int heal;

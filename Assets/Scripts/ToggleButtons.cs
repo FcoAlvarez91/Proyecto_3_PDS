@@ -23,7 +23,6 @@ public class ToggleButtons : MonoBehaviour
 
     public void activateButtons()
     {
-        targetText.GetComponent<TextMeshProUGUI>().text = "SELECT A TARGET";
         select1.SetActive(true);
         select2.SetActive(true);
         select3.SetActive(true);
@@ -39,7 +38,7 @@ public class ToggleButtons : MonoBehaviour
 
     public void deactivateButtons()
     {
-        targetText.GetComponent<TextMeshProUGUI>().text = "TURN OVER";
+        targetText.GetComponent<TextMeshProUGUI>().text = "RESOLVING TURNS";
         select1.SetActive(false);
         select2.SetActive(false);
         select3.SetActive(false);
