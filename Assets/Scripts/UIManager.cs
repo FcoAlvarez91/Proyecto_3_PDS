@@ -518,7 +518,7 @@ public class UIManager : MonoBehaviour
         preGameInvSelection["creator"] = auth.CurrentUser.Email;
         function.CallAsync(preGameInvSelection).ContinueWith((task) =>
         {
-            if (task.IsComplete)
+            if (task.IsCompleted)
             {
                 preGameInvSelection = new Dictionary<string, string>();
             }
