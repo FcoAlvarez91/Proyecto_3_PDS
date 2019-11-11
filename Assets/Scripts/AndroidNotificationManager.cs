@@ -6,14 +6,13 @@ using Firebase;
 using Firebase.Database;
 using Firebase.Unity.Editor;
 
-public class AndroidNotificationManager : MonoBehaviour
+public class AndroidNotificationManager
 {
     public AndroidNotificationChannel defaultNotificationChannel;
 
     private int identifier;
 
-    // Start is called before the first frame update
-    void Start()
+    public void notifStart()
     {
         defaultNotificationChannel = new AndroidNotificationChannel()
         {
@@ -24,7 +23,7 @@ public class AndroidNotificationManager : MonoBehaviour
         };
         AndroidNotificationCenter.RegisterNotificationChannel(defaultNotificationChannel);
 
-        newFriendNotification();
+        // newFriendNotification();
 
         // Set up the Editor before calling into the realtime database.
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://YOUR-FIREBASE-APP.firebaseio.com/");
@@ -34,13 +33,7 @@ public class AndroidNotificationManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void newFriendNotification()
+    public static void newFriendNotification()
     {
         AndroidNotification notification = new AndroidNotification()
         {
@@ -51,7 +44,22 @@ public class AndroidNotificationManager : MonoBehaviour
             FireTime = System.DateTime.Now,
         };
 
-        identifier = AndroidNotificationCenter.SendNotification(notification, "channel_id");
+        AndroidNotificationCenter.SendNotification(notification, "channel_id");
+
+    }
+
+    public static void sentFriendRequestNotification(string str)
+    {
+        AndroidNotification notification = new AndroidNotification()
+        {
+            Title = "Friend Request Sent",
+            Text = "You have sent a Friend Request to " + str,
+            SmallIcon = "default",
+            LargeIcon = "default",
+            FireTime = System.DateTime.Now,
+        };
+
+        AndroidNotificationCenter.SendNotification(notification, "channel_id");
 
     }
 

@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: Scroll_Wind_Slash
   m_EditorClassIdentifier: 
   id: 3
+  cost: 20
   name: Wind Slash
-  effect: An enemy takes medium damage.
+  effect: An enemy takes medium damage and leave Vulnerable.
   energyType: wind
   artwork: {fileID: 21300070, guid: cf1b3ad20ec9d934fa8ba5b6188fdebd, type: 3}
   energy: {fileID: -5672807042227315657, guid: 8d37205dd86f1e64f81e34228c838514, type: 3}
   type: attack
   damage: 4
   heal: 0
-  conditions: []
+  conditions:
+  - Vulnerable

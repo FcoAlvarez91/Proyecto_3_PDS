@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Scroll_Strike
   m_EditorClassIdentifier: 
   id: 4
+  cost: 10
   name: Strike
   effect: Deal medium damage to an enemy.
   energyType: none

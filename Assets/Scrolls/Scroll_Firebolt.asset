@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Scroll_Firebolt
   m_EditorClassIdentifier: 
   id: 0
+  cost: 20
   name: Firebolt
   effect: Deal high damage to an enemy.
   energyType: fire

@@ -9,27 +9,50 @@ using Firebase;
 using Firebase.Database;
 using Firebase.Unity.Editor;
 using Firebase.Functions;
+// using Firebase.Messaging;
+// using Firebase.Extensions;
 
 public class UIManager : MonoBehaviour
 {
     public TextMeshProUGUI email;
     public TextMeshProUGUI password;
-    public TextMeshProUGUI friendReq;
-    Firebase.Auth.FirebaseAuth auth;
-    Firebase.Auth.FirebaseUser user;
-    public DatabaseReference reference;
+    public TMP_InputField friendReq;
+    public static Firebase.Auth.FirebaseAuth auth;
+    public static Firebase.Auth.FirebaseUser user;
+    public static DatabaseReference reference;
     public GameObject mainMenu;
     public GameObject loginMenu;
     public GameObject friendListGO;
-    public TextMeshProUGUI friendInListText;
+    public GameObject newGameInviteListItem;
+    public GameObject statsListGO;
+    public GameObject preGameInvListGO;
+    public GameObject reqGameInviteListItemGO;
     public Dictionary<object, object> requests;
-    //public Button[] friendRequests;
+    // public Button[] friendRequests;
     public GameObject FriendRequestButton;
     public RectTransform RequestsRectTransform;
     public RectTransform friendListRectTransform;
-    public TextMeshProUGUI friendRequestButtonText;
+    public RectTransform newGameListRectTransform;
+    public RectTransform statsGameListRT;
+    public RectTransform previewInvsRT;
+    public RectTransform requestInvGameListRT;
+    public RectTransform activeGameListRT;
     public Dictionary<object, object> friendList;
-    //public FirebaseFunctions functions;
+    public Dictionary<object, object> statistics;
+    public Dictionary<object, object> gameInvRequestList;
+    public Dictionary<object, object> activeGamesList;
+    public Dictionary<string, string> preGameInvSelection = new Dictionary<string, string>();
+    private bool reqButtonsMade = false;
+    private bool friendListButtonsMade = false;
+    private bool gameListInviteItemsMade = false;
+    private bool statisticListMade = false;
+    private bool previewGameListMade = false;
+    private bool gameInvReqListMade = false;
+    private bool statsListMade = false;
+    private bool activeGameListMade = false;
+    private List<int> playersInvitedNum = new List<int>(){ 1, 2, 3 };
+    public Button continueButton;
+    // public FirebaseFunctions functions;
 
     // Handle initialization of the necessary firebase modules:
     void InitializeFirebase()
@@ -41,6 +64,12 @@ public class UIManager : MonoBehaviour
         //functions = Firebase.Functions.DefaultInstance;
     }
 
+    /* public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)
+    {
+        UnityEngine.Debug.Log("From: " + e.Message.From);
+        UnityEngine.Debug.Log("Message ID: " + e.Message.MessageId);
+    } */
+
     // Track state changes of the auth object.
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
     {
@@ -49,17 +78,54 @@ public class UIManager : MonoBehaviour
             bool signedIn = user != auth.CurrentUser && auth.CurrentUser != null;
             if (!signedIn && user != null)
             {
+                emptyLists();
                 Debug.Log("Signed out " + user.UserId);
+                loginMenu.SetActive(true);
+                mainMenu.SetActive(false);
             }
             user = auth.CurrentUser;
             if (signedIn)
             {
                 Debug.Log("Signed in " + user.Email);
-
-                mainMenu.SetActive(true);
+                setupEventHandlers();
+                emptyLists();
+                getLists();
                 loginMenu.SetActive(false);
+                mainMenu.SetActive(true);
             }
         }
+    }
+
+    private void setupEventHandlers()
+    {
+        var userDataRefs = FirebaseDatabase.DefaultInstance.GetReference("users/" + auth.CurrentUser.UserId);
+
+        userDataRefs.ChildAdded += HandleDataChanged;
+        userDataRefs.ChildChanged += HandleDataChanged;
+        userDataRefs.ChildRemoved += HandleDataChanged;
+        userDataRefs.ChildMoved += HandleDataChanged;
+
+    }
+
+    private void HandleDataChanged (object sender, ChildChangedEventArgs args)
+    {
+        Debug.Log("Data changed in " + auth.CurrentUser.Email);
+        if (args.DatabaseError != null)
+        {
+            Debug.LogError(args.DatabaseError.Message);
+            return;
+        }
+        emptyLists();
+        getLists();
+    }
+
+    private void getLists()
+    {
+        getFriendList();
+        getInvites();
+        //getStatistics();
+        getGameInvRequestList();
+        getActiveGameList();
     }
 
     void OnDestroy()
@@ -72,19 +138,37 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         InitializeFirebase();
-        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-        auth.StateChanged += AuthStateChanged;
-        AuthStateChanged(this, null);
+        // auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        // auth.StateChanged += AuthStateChanged;
+        // AuthStateChanged(this, null);
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://four-mages.firebaseio.com/");
         reference = FirebaseDatabase.DefaultInstance.RootReference;
-        //getInvites();
+        // Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
+        // Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
+        Debug.Log("Firebase Messaging Initialized");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+
+            // Check if Back was pressed this frame
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+
+                // Quit the application
+                SceneManager.LoadScene("Menu");
+            }
+        }
     }
+
+    /* public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
+    {
+        UnityEngine.Debug.Log("Received Registration Token: " + token.Token);
+    } */
 
     public void logIn()
     {
@@ -104,7 +188,6 @@ public class UIManager : MonoBehaviour
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
         });
-        getInvites();
     }
 
     public void logOut()
@@ -130,30 +213,40 @@ public class UIManager : MonoBehaviour
                 Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
                 return;
             }
-            Debug.Log("newUser not set");
-            // Firebase user has been created
-            //reference.Child("users").Child(UserId).Child("useremail").SetValueAsync(email.text);
             Firebase.Auth.FirebaseUser newUser = task.Result;
-            Debug.Log("User " + newUser.UserId + "being created in database");
-            reference.Child("users").Child(email.text.Replace('.', ',')).Child("DisplayName").SetValueAsync(email.text);
-            Debug.LogFormat("Firebase user created successfully: {0} ({1})",
-                newUser.DisplayName, newUser.UserId);
             mainMenu.SetActive(true);
             loginMenu.SetActive(false);
 
         });
-        //inviteWait.Wait();
     }
 
     public void sendRequest()
     {
-        string key = reference.Child("users").Child(friendReq.text.Replace('.', ',')).Child("invites").Push().Key;
-        reference.Child("users").Child(friendReq.text.Replace('.', ',')).Child("invites").Child(key).SetValueAsync(user.Email);
+        var data = new Dictionary<string, object>();
+        data["requesterUid"] = user.UserId;
+        data["accepterEmail"] = friendReq.text;
+        var function = Firebase.Functions.FirebaseFunctions.DefaultInstance.GetHttpsCallable("sendFriendRequest");
+        function.CallAsync(data);
+        /* string key = reference.Child("users").Child(friendReq.text.Replace('.', ',')).Child("invites").Push().Key;
+        reference.Child("users").Child(friendReq.text.Replace('.', ',')).Child("invites").Child(key).SetValueAsync(user.Email); */
+        AndroidNotificationManager.sentFriendRequestNotification(friendReq.text);
+        friendReq.text = "";
     }
 
-    public void startGame()
+    public void startGame(string gameName)
     {
+        GameManager.currentGame = gameName;
         SceneManager.LoadScene("In Game");
+    }
+
+    public void goShop()
+    {
+        SceneManager.LoadScene("Shop");
+    }
+
+    public void goDeck()
+    {
+        SceneManager.LoadScene("Deck");
     }
 
     public void closeApp()
@@ -161,36 +254,12 @@ public class UIManager : MonoBehaviour
         Application.Quit();
     }
 
-    /*public void getFriendRequestList()
-    {
-        functions.GetHttpCallable("getInvites").ContinueWith(task =>
-        {
-            if (task.IsFaulted)
-            {
-                //handle error..
-            }
-
-            else if (task.IsComplete)
-            {
-                DataSnapshot friendSnap = task.Result;
-                foreach (string friend in friendSnap) {
-                    Debug.Log("Friend Reqs are: " + friend);
-                }
-            }
-        });
-    }*/
-
     public void getInvites()
     {
-        // Call the function and extract the operation from the result.
-        //var inviteWait = makeRequestButtons();
         var data = new Dictionary<string, object>();
-        //Debug.Log("este ese el mail: " + auth.CurrentUser.Email);
-        data["email"] = auth.CurrentUser.Email;
+        data["uid"] = auth.CurrentUser.UserId;
         data["push"] = true;
-        //Debug.Log("getInvites");
         var function = Firebase.Functions.FirebaseFunctions.DefaultInstance.GetHttpsCallable("getInvites");
-        //Debug.Log("function = " + function.GetType());
         function.CallAsync(data).ContinueWith((task) =>
         {
             if (task.IsFaulted)
@@ -204,9 +273,28 @@ public class UIManager : MonoBehaviour
         });
     }
 
+    public void getActiveGameList()
+    {
+        var data = new Dictionary<string, object>();
+        data["uid"] = auth.CurrentUser.UserId;
+        data["push"] = true;
+        var function = Firebase.Functions.FirebaseFunctions.DefaultInstance.GetHttpsCallable("getActiveGames");
+        function.CallAsync(data).ContinueWith((task) =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.Log("Ta mala la wea" + task.Exception);
+            }
+            else if (task.IsCompleted && task.Result.Data != null)
+            {
+                activeGamesList = (Dictionary<object, object>)task.Result.Data;
+            }
+        });
+    }
+
     public void makeRequestButtons()
     {
-        if(requests != null)
+        if(requests != null && reqButtonsMade == false)
         {
             foreach (KeyValuePair<object, object> request in requests)
             {
@@ -214,21 +302,20 @@ public class UIManager : MonoBehaviour
                 GameObject requestAcceptButton = Instantiate(FriendRequestButton);
                 Debug.Log("Button instantiated");
                 Button button = requestAcceptButton.GetComponent<Button>();
-                Debug.Log("Button exist?" + (button != null));
                 button.onClick.AddListener(() => acceptFriendRequest((string)request.Value));
                 requestAcceptButton.transform.SetParent(RequestsRectTransform, false);
                 requestAcceptButton.GetComponentInChildren<TextMeshProUGUI>().text = (string)request.Value;
                 Debug.Log("Made button for: " + (string)request.Value);
             }
+            reqButtonsMade = true;
         }
     }
 
     public void acceptFriendRequest(string requesterEmail)
     {
         var data = new Dictionary<string, string>();
-        //Debug.Log("este ese el mail: " + auth.CurrentUser.Email);
         data["requesterEmail"] = requesterEmail;
-        data["accepterEmail"] = user.Email;
+        data["accepterUid"] = user.UserId;
         var function = Firebase.Functions.FirebaseFunctions.DefaultInstance.GetHttpsCallable("acceptInvite");
         function.CallAsync(data).ContinueWith((task) =>
         {
@@ -247,7 +334,7 @@ public class UIManager : MonoBehaviour
     public void getFriendList()
     {
         var data = new Dictionary<string, object>();
-        data["email"] = auth.CurrentUser.Email;
+        data["uid"] = auth.CurrentUser.UserId;
         data["push"] = true;
         var function = Firebase.Functions.FirebaseFunctions.DefaultInstance.GetHttpsCallable("getFriends");
         function.CallAsync(data).ContinueWith((task) =>
@@ -264,24 +351,265 @@ public class UIManager : MonoBehaviour
         });
     }
 
+    public void getGameInvRequestList()
+    {
+        var data = new Dictionary<string, object>();
+        data["uid"] = auth.CurrentUser.UserId;
+        data["push"] = true;
+        var function = Firebase.Functions.FirebaseFunctions.DefaultInstance.GetHttpsCallable("getGameInvites");
+        function.CallAsync(data).ContinueWith((task) =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.Log("Ta mala la wea" + task.Exception);
+            }
+            else if (task.IsCompleted && task.Result.Data != null)
+            {
+                gameInvRequestList = (Dictionary<object, object>)task.Result.Data;
+                Debug.Log("game request List retrieved ");
+            }
+        });
+    }
+
     public void makeFriendList()
     {
-        if (friendList != null)
+        if (friendList != null && friendListButtonsMade == false)
         {
             foreach (KeyValuePair<object, object> friend in friendList)
             {
-                Debug.Log("Making List item for: " + (string)friend.Value);
                 GameObject friendInListObj = Instantiate(friendListGO);
                 friendInListObj.transform.SetParent(friendListRectTransform, true);
                 friendInListObj.GetComponentInChildren<TextMeshProUGUI>().text = (string)friend.Value;
                 friendInListObj.transform.localScale = new Vector3(1f, 1f, 1f);
                 friendInListObj.GetComponentInChildren<TextMeshProUGUI>().transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                Debug.Log("Made List item for: " + (string)friend.Value);
             }
+            friendListButtonsMade = true;
         }
     }
-    public void acceptInvite()
-    {
 
+    public void makeGameInviteList()
+    {
+        if (friendList != null && gameListInviteItemsMade == false)
+        {
+            foreach (KeyValuePair<object, object> friend in friendList)
+            {
+                makeGameInviteListItem((string)friend.Value);
+            }
+            gameListInviteItemsMade = true;
+        }
+    }
+
+    public void getStatistics()
+    {
+        var data = new Dictionary<string, object>();
+        data["uid"] = auth.CurrentUser.Email;
+        data["push"] = true;
+        Debug.Log("Call for stats of " + data["email"]);
+        var function = Firebase.Functions.FirebaseFunctions.DefaultInstance.GetHttpsCallable("getStatistics");
+        function.CallAsync(data).ContinueWith((task) =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.Log("Ta mala la wea" + task.Exception);
+            }
+            else if (task.IsCompleted && task.Result.Data != null)
+            {
+                statistics = (Dictionary<object, object>)task.Result.Data;
+                Debug.Log("statistics retrieved ");
+                foreach (KeyValuePair<object, object> statistic in statistics)
+                {
+                    Debug.Log(statistic.Key.ToString() + ": " + statistic.Value.ToString());
+                }
+            }
+        });
+    }
+
+    public void makeGameInviteRequestList()
+    {
+        if(gameInvReqListMade == false)
+        {
+            foreach (KeyValuePair<object, object> game in gameInvRequestList)
+            {
+                makeGameInviteRequestListItem(game.Value.ToString());
+                Debug.Log(game.Value + " invite to game!");
+            }
+            gameInvReqListMade = true;
+        }
+    }
+
+    public void makeActiveGameList()
+    {
+        if(activeGameListMade == false)
+        {
+            foreach (KeyValuePair<object, object> game in activeGamesList)
+            {
+                makeActiveGameListItem(game.Value.ToString());
+            }
+            activeGameListMade = true;
+        }
+    }
+
+    public void makeActiveGameListItem(string gameName)
+    {
+        GameObject gameInListObj = Instantiate(reqGameInviteListItemGO);
+        gameInListObj.transform.SetParent(activeGameListRT, true);
+        gameInListObj.GetComponentInChildren<TextMeshProUGUI>().text = gameName;
+        Button button = gameInListObj.GetComponentInChildren<Button>();
+        button.onClick.AddListener(() => startGame(gameName));
+        gameInListObj.transform.localScale = new Vector3(1f, 1f, 1f);
+        gameInListObj.GetComponentInChildren<TextMeshProUGUI>().transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+    }
+
+    public void makeGameInviteRequestListItem(string gameName)
+    {
+        GameObject gameInListObj = Instantiate(reqGameInviteListItemGO);
+        gameInListObj.transform.SetParent(requestInvGameListRT, true);
+        gameInListObj.GetComponentInChildren<TextMeshProUGUI>().text = gameName;
+        Button button = gameInListObj.GetComponentInChildren<Button>();
+        button.onClick.AddListener(() => acceptGameInvite(gameName));
+        gameInListObj.transform.localScale = new Vector3(1f, 1f, 1f);
+        gameInListObj.GetComponentInChildren<TextMeshProUGUI>().transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+    }
+
+    public void invitePlayerOnClick(string friendInList, GameObject listItem)
+    {
+        GameObject previewListItem = Instantiate(preGameInvListGO);
+        previewListItem.transform.SetParent(previewInvsRT, true);
+        previewListItem.GetComponentInChildren<TextMeshProUGUI>().text = friendInList;
+        preGameInvSelection.Add("user" + playersInvitedNum[0].ToString(), friendInList);
+        int order = playersInvitedNum[0];
+        playersInvitedNum.RemoveAt(0);
+        Debug.Log("can invite: " + playersInvitedNum.Count);
+        if(playersInvitedNum.Count == 0)
+        {
+            deactivateInviteButtons();
+        }
+        previewGameListMade = true;
+        Debug.Log(order.ToString());
+        Button button = previewListItem.GetComponentInChildren<Button>();
+        button.onClick.AddListener(() => removePlayerFromPreviewGameInvite(listItem, order));
+        previewListItem.transform.localScale = new Vector3(1f, 1f, 1f);
+        previewListItem.GetComponentInChildren<TextMeshProUGUI>().transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+    }
+
+    public void makeStatsList()
+    {
+        if(statsListMade == false)
+        {
+            foreach(KeyValuePair<object,object> statistic in statistics)
+            {
+                makeStatsListItem(statistic.Key.ToString().Replace('_',' ') + ": " + statistic.Value.ToString());
+            }
+            statsListMade = true;
+        }
+    }
+
+    public void makeStatsListItem(string statText)
+    {
+        GameObject statsListItemObj = Instantiate(statsListGO);
+        statsListItemObj.transform.SetParent(statsGameListRT, true);
+        statsListItemObj.GetComponentInChildren<TextMeshProUGUI>().text = statText;
+        statsListItemObj.transform.localScale = new Vector3(1f, 1f, 1f);
+        statsListItemObj.GetComponentInChildren<TextMeshProUGUI>().transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+    }
+
+    public void makeGameInviteListItem(string friend)
+    {
+        GameObject friendInListObj = Instantiate(newGameInviteListItem);
+        friendInListObj.transform.SetParent(newGameListRectTransform, true);
+        friendInListObj.GetComponentInChildren<TextMeshProUGUI>().text = friend;
+        Button button = friendInListObj.GetComponentInChildren<Button>();
+        button.onClick.AddListener(() => invitePlayerOnClick(friend, friendInListObj));
+        friendInListObj.transform.localScale = new Vector3(1f, 1f, 1f);
+        friendInListObj.GetComponentInChildren<TextMeshProUGUI>().transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+    }
+    
+    public void removePlayerFromPreviewGameInvite(GameObject listItem, int orderInList)
+    {
+        listItem.SetActive(true);
+        preGameInvSelection.Remove("user" + orderInList.ToString());
+        playersInvitedNum.Add(orderInList);
+    }
+
+    public void deactivateInviteButtons()
+    {
+        Button[] listItems = newGameListRectTransform.GetComponentsInChildren<Button>();
+        Debug.Log("Deactivating " + listItems.Length.ToString() + " Buttons");
+        foreach(Button item in listItems)
+        {
+            item.interactable = false;
+        }
+        foreach(KeyValuePair<string,string> invite in preGameInvSelection)
+        {
+            Debug.Log("ready to send invite to " + invite.Value + " key: " + invite.Key);
+        }
+        continueButton.interactable = true;
+
+    }
+
+    public void sendGameInvites()
+    {
+        foreach (Transform child in previewInvsRT)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        previewGameListMade = false;
+        var function = Firebase.Functions.FirebaseFunctions.DefaultInstance.GetHttpsCallable("inviteFriendsToNewGame");
+        preGameInvSelection["creator"] = auth.CurrentUser.UserId;
+        function.CallAsync(preGameInvSelection).ContinueWith((task) =>
+        {
+            if (task.IsCompleted)
+            {
+                preGameInvSelection = new Dictionary<string, string>();
+            }
+        });
+    }
+
+    public void acceptGameInvite(string gameName)
+    {
+        var function = Firebase.Functions.FirebaseFunctions.DefaultInstance.GetHttpsCallable("acceptGameInvite");
+        var data = new Dictionary<string, string>();
+        data["uid"] = auth.CurrentUser.UserId;
+        data["gameId"] = gameName;
+        function.CallAsync(data);
+    }
+
+    public void emptyLists()
+    {
+        foreach (Transform child in RequestsRectTransform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        foreach (Transform child in friendListRectTransform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        foreach (Transform child in statsGameListRT)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        foreach (Transform child in newGameListRectTransform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        foreach (Transform child in previewInvsRT)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        foreach (Transform child in requestInvGameListRT)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        foreach (Transform child in activeGameListRT)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        reqButtonsMade = false;
+        friendListButtonsMade = false;
+        gameListInviteItemsMade = false;
+        statisticListMade = false;
+        previewGameListMade = false;
+        gameInvReqListMade = false;
+        activeGameListMade = false;
     }
 }

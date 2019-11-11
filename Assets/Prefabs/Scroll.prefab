@@ -167,7 +167,6 @@ GameObject:
   - component: {fileID: 2129953157922930313}
   - component: {fileID: 5103583363358682901}
   - component: {fileID: 798535878205824059}
-  - component: {fileID: 2628046785224467446}
   m_Layer: 5
   m_Name: card_emblem
   m_TagString: Untagged
@@ -255,19 +254,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2628046785224467446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880518303918529287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4183b559fe3e814d8ec410366dfb14e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 0}
 --- !u!1 &4561186449262971211
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,6 +267,7 @@ GameObject:
   - component: {fileID: 1329201562}
   - component: {fileID: 1329201561}
   - component: {fileID: 7585482888457829990}
+  - component: {fileID: 1259945783876647675}
   m_Layer: 0
   m_Name: Scroll
   m_TagString: Untagged
@@ -342,7 +329,7 @@ SpriteRenderer:
   m_SortingLayerID: 755453789
   m_SortingLayer: 1
   m_SortingOrder: 15
-  m_Sprite: {fileID: 21300000, guid: 78785e123caa5c9499f7a0f119e50a5b, type: 3}
+  m_Sprite: {fileID: 21300006, guid: 78785e123caa5c9499f7a0f119e50a5b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -384,8 +371,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 023964811724b3448b2b5580c9c22613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useScroll: {fileID: 0}
+  activeScroll: {fileID: 0}
   otherScroll1: {fileID: 0}
   otherScroll2: {fileID: 0}
+  scrollHolder: {fileID: 0}
+  toggleButtons: {fileID: 0}
 --- !u!114 &7585482888457829990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,6 +396,32 @@ MonoBehaviour:
   artworkImage: {fileID: 3326550971429844914}
   energyImage: {fileID: 1127029647667658137}
   energySmallImage: {fileID: 8825677397893656556}
+--- !u!61 &1259945783876647675
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4561186449262971211}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.25, y: 0.1015625}
+    newSize: {x: 0.25, y: 0.25}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.25, y: 0.25}
+  m_EdgeRadius: 0
 --- !u!1 &5249050565805024259
 GameObject:
   m_ObjectHideFlags: 0
@@ -791,6 +808,7 @@ GameObject:
   - component: {fileID: 4091640513736485998}
   - component: {fileID: 7791366623915305569}
   - component: {fileID: 474929697061386731}
+  - component: {fileID: 2225852227344723951}
   m_Layer: 5
   m_Name: card_front
   m_TagString: Untagged
@@ -881,3 +899,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2225852227344723951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8759709910584546090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba07166128e8a843a94c73b8b2fd259, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scroll1: {fileID: 0}
+  scroll2: {fileID: 0}
+  scroll3: {fileID: 0}
+  activeScroll: {fileID: 0}

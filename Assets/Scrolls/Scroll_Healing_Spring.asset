@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Scroll_Healing_Spring
   m_EditorClassIdentifier: 
   id: 2
+  cost: 20
   name: Healing Spring
   effect: An ally is healed for a medium amount.
   energyType: water

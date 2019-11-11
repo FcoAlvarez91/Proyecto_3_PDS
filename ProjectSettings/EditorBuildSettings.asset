@@ -14,4 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game Over.unity
     guid: beaba9e0caa35e34183c2403b2013927
+  - enabled: 1
+    path: Assets/Scenes/Singleplayer.unity
+    guid: eee5e520f5909cf48bb7721d9c31509d
+  - enabled: 1
+    path: Assets/Scenes/Shop.unity
+    guid: 90733a4cf0a73af44b0f20fc0bf99df9
+  - enabled: 1
+    path: Assets/Scenes/Deck.unity
+    guid: 86088273d9081c648b23a2bdd9acfa87
   m_configObjects: {}

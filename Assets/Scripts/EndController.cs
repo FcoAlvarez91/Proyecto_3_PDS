@@ -17,9 +17,19 @@ public class EndController : MonoBehaviour
 
     }
 
+    IEnumerator WaitFor2()
+    {
+        yield return new WaitForSeconds(2);
+        goGameOver();
+    }
+
     public void goGameOver()
     {
+        StartCoroutine(WaitFor2());
+    }
 
+    public void endGame()
+    {
         SceneManager.LoadScene("Game Over");
     }
 

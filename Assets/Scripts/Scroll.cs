@@ -6,6 +6,7 @@ using UnityEngine;
 public class Scroll : ScriptableObject
 {
     public int id;
+    public int cost;
     public new string name;
     public string effect;
     public string energyType;
